@@ -114,8 +114,8 @@ Page({
                 // 判断是否主服务 isPrimary
                 for (let i = 0; i < res.services.length; i++) {
                     if (res.services[i].isPrimary) {
-                        console.log(111, res.services[i])
                         this.getBLEDeviceCharacteristics(this.data.deviceId, res.services[i].uuid)
+                        return
                     }
                 }
             }
@@ -136,6 +136,7 @@ Page({
                             serviceId: serviceId,
                             characteristicId: item.uuid
                         })
+                        return
                     }
                 }
             },
