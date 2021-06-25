@@ -1,0 +1,25 @@
+{
+  "name": "bluetooth",
+  "version": "1.0.0",
+  "description": "小程序蓝牙打印机",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZhangHaoWeb/blueTooth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ZhangHaoWeb/blueTooth/issues"
+  },
+  "homepage": "https://github.com/ZhangHaoWeb/blueTooth#readme",
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "text-encoding": "^0.7.0",
+    "to-array-buffer": "^3.2.0",
+    "weapp-qrcode": "^1.0.0"
+  }
+}

@@ -1,16 +1,9 @@
 // index.js
 // 获取应用实例
 const app = getApp()
-
-function ab2hex(buffer) {
-    let hexArr = Array.prototype.map.call(
-      new Uint8Array(buffer),
-      function(bit) {
-        return ('00' + bit.toString(16)).slice(-2)
-      }
-    )
-    return hexArr.join('');
-  }
+const Buffer = require('buffer/').Buffer
+const PrinterJobs=require('../../printer/printerjobs')
+const printerUtil = require('../../printer/printerutil')
 
 Page({
     data: {
@@ -31,6 +24,8 @@ Page({
                 canIUseGetUserProfile: true
             })
         }
+        let buffer = this.getBuffer();
+        console.log(buffer)
     },
     getUserProfile(e) {
         // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
@@ -152,11 +147,8 @@ Page({
     // 写数据
     writeBLECharacteristicValue() {
         console.log(this.data.deviceId, this.data.serviceId, this.data.characteristicId)
-
-        // 向蓝牙设备发送一个0x00的16进制数据
-        let buffer = new ArrayBuffer(1)
-        let dataView = new DataView(buffer)
-        dataView.setUint8(0, Math.random() * 255 | 0)
+        let buffer = this.getBuffer();
+        
         wx.writeBLECharacteristicValue({
             deviceId: this.data.deviceId,
             serviceId: this.data.serviceId,
@@ -188,4 +180,22 @@ Page({
         wx.closeBluetoothAdapter()
         this._discoveryStarted = false
     },
+    getBuffer() {
+        let printerJobs = new PrinterJobs();
+        printerJobs
+        .print()
+        .setAlign('LT')
+        .print(printerUtil.fillLine())
+        .setAlign('ct')
+        .print('回单联')
+        .setAlign('LT')
+        .setLineSpacing(40)
+        .print(printerUtil.inline(`车牌号:xxxx`, `区域:xxxx`))
+        .print(printerUtil.inline(`快递线路:xxx`,`会员ID:xxx`))
+        .print(printerUtil.inline(`寄件人:xxx`, `电话:xxx`))
+
+        let buffer = printerJobs.buffer();
+
+        return buffer;
+    }
 })
